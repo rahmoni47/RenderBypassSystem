@@ -10,16 +10,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Document(collection = "users")
+@Document(collection = "servers")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Servers {
+
     @Id
+    @Builder.Default
     private String id = UUID.randomUUID().toString();
+
     private String url;
     private String email;
+
+    @Builder.Default
     private boolean status = true;
-    private String domaine; 
+
+    private String domain;
 }

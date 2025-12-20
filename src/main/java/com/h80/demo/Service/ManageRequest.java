@@ -28,7 +28,7 @@ public class ManageRequest {
         Servers server = Servers.builder()
                 .url(url)
                 .email(email)
-                .domaine(domaine)
+                .domain(domaine)
                 .build();
         server = repo.save(server);
         requestScheduler.start(url);
