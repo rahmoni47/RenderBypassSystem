@@ -20,5 +20,6 @@ public class Servers {
     private String id = UUID.randomUUID().toString();
     private String url;
     private String email;
-    private boolean status = true; 
+    private boolean status = true;
+    private String domaine; 
 }
