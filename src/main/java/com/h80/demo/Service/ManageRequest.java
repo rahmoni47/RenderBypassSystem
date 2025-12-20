@@ -25,6 +25,10 @@ public class ManageRequest {
         if (domaine == null) {
             throw new ApiException("the link format is rong please check your url");
         }
+        boolean existsByDomain = repo.existsByDomain(domaine);
+        if (existsByDomain) {
+            throw new ApiException("There is already a requestScheduler for this website if you want to edit it use the Id") ; 
+        }
         Servers server = Servers.builder()
                 .url(url)
                 .email(email)
@@ -62,7 +66,7 @@ public class ManageRequest {
 
             return host;
         } catch (Exception e) {
-            return null; 
+            return null;
         }
     }
 }
