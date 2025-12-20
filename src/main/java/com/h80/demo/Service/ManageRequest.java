@@ -1,5 +1,7 @@
 package com.h80.demo.Service;
 
+import java.net.URI;
+
 import org.springframework.stereotype.Service;
 
 import com.h80.demo.Document.Servers;
@@ -18,9 +20,10 @@ public class ManageRequest {
         this.requestScheduler = requestScheduler;
     }
 
-    public Response CreateRequest(String url) {
+    public Response CreateRequest(String url, String email) {
         Servers server = Servers.builder()
                 .url(url)
+                .email(email)
                 .build();
         server = repo.save(server);
         requestScheduler.start(url);
@@ -36,8 +39,25 @@ public class ManageRequest {
         repo.deleteById(id);
         requestScheduler.stop(id);
         return Response.builder()
-            .status("Deleted")
+                .status("Deleted")
                 .message("request Scheduler with id :" + id + "is deleted Successfully")
                 .build();
+    }
+
+    public String CheckFormatAndGetDomaine(String url) {
+        try {
+            URI uri = new URI(url);
+
+            String host = uri.getHost();
+
+            if (host == null) {
+                uri = new URI("http://" + url);
+                host = uri.getHost();
+            }
+
+            return host;
+        } catch (Exception e) {
+            return null; 
+        }
     }
 }
