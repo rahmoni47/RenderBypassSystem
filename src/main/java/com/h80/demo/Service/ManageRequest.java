@@ -21,9 +21,14 @@ public class ManageRequest {
     }
 
     public Response CreateRequest(String url, String email) {
+        String domaine = CheckFormatAndGetDomaine(url);
+        if (domaine == null) {
+            throw new ApiException("the link format is rong please check your url");
+        }
         Servers server = Servers.builder()
                 .url(url)
                 .email(email)
+                .domaine(domaine)
                 .build();
         server = repo.save(server);
         requestScheduler.start(url);
