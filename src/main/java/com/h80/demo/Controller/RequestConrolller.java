@@ -22,7 +22,7 @@ public class RequestConrolller {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Response createrequestScheduler(@RequestParam String url,@RequestParam String email) {
-        return manager.CreateRequest(url,email);
+        return manager.CreateRequest(url, email); 
     }
 
     @DeleteMapping("/{id}")
