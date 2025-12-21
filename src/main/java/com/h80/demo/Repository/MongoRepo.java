@@ -13,5 +13,7 @@ public interface  MongoRepo extends MongoRepository<Servers, String> {
 
     Optional<Servers> findByDomain(String domain);
     
-    List<Servers> findByStatusFalseAndDownSinceBefore(Instant date); 
+    List<Servers> findByStatusFalseAndDownSinceBefore(Instant date);
+    
+    List<Servers> findByStatusFalse();
 }
