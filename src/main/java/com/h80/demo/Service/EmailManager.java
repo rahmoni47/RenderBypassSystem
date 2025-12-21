@@ -24,6 +24,12 @@ public class EmailManager {
         this.mailSender = mailSender;
         this.managerequest = managerequest;
         this.repo = repo;
+        loaddownList(); 
+    }
+
+    public void loaddownList() {
+        List<Servers> list = repo.findByStatusFalse();
+        list.forEach(element -> downList.add(element.getDomain()));
     }
 
     public void ServerIsDown(String url) {
@@ -36,6 +42,7 @@ public class EmailManager {
                 .orElseThrow(() -> new IllegalStateException("Server not found: " + domain));
 
         server.setStatus(false);
+        server.setDownSince(Instant.now());
         repo.save(server);
         String subject = "⚠️ Alert: Your Website Is Currently Down";
         String to = server.getEmail();
@@ -73,6 +80,7 @@ public class EmailManager {
                 .orElseThrow(() -> new IllegalStateException("Server not found: " + domain));
 
         servers.setStatus(true);
+        servers.setDownSince(null);
         repo.save(servers);
         String to = servers.getEmail();
         String subject = "✅ Good News! Your Website Is Back Online";
