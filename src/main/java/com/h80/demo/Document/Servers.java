@@ -1,5 +1,6 @@
 package com.h80.demo.Document;
 
+import java.time.Instant;
 import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
@@ -28,4 +29,6 @@ public class Servers {
     private boolean status = true;
 
     private String domain;
+
+    private Instant downSince; 
 }
