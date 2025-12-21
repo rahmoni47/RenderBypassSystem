@@ -1,6 +1,7 @@
 package com.h80.demo.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -105,5 +106,9 @@ public class EmailManager {
         message.setSubject(Subject);
         message.setText(body);
         mailSender.send(message);
+    }
+
+    public void cleanDownList(List<String> arr) {
+        downList.removeAll(arr);  
     }
 }
