@@ -42,15 +42,11 @@ public class ManageRequest {
                 .build();
     }
 
-    public Response DeleteRequest(String id) {
+    public void DeleteRequest(String id) {
         Servers server = repo.findById(id)
                 .orElseThrow(() -> new ApiException("There is no request Scheduler with this id :" + id));
         repo.deleteById(id);
         requestScheduler.stop(id);
-        return Response.builder()
-                .status("Deleted")
-                .message("request Scheduler with id :" + id + "is deleted Successfully")
-                .build();
     }
 
     public String CheckFormatAndGetDomaine(String url) {
