@@ -11,6 +11,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.h80.demo.Repository.MongoRepo;
 
+import jakarta.annotation.PostConstruct;
+
 @Service
 public class RandomRequestScheduler {
     private final WebClient webclient;
@@ -24,9 +26,13 @@ public class RandomRequestScheduler {
         this.taskScheduler = taskScheduler;
         this.repo = repo;
         this.random = random;
+    }
+
+    @PostConstruct
+    public void init() {
         repo.findAll()
-            .stream()
-            .forEach(task -> start(task.getId()));
+                .stream()
+                .forEach(task -> start(task.getId()));
     }
     
     public void start(String url) {
@@ -37,7 +43,7 @@ public class RandomRequestScheduler {
     
     public void scheduleNext(String url) {
         long deley = random.nextInt(5 * 60 * 1000);
-        ScheduledFuture future = taskScheduler.schedule( ()-> sendRequest(url), Instant.now().plusMillis(deley)) ; 
+        ScheduledFuture<?> future = taskScheduler.schedule( ()-> sendRequest(url), Instant.now().plusMillis(deley)) ; 
         tasks.put(url, future) ; 
     }
 
