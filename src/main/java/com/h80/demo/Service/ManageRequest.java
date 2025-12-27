@@ -43,10 +43,13 @@ public class ManageRequest {
     }
 
     public void DeleteRequest(String id) {
-        Servers server = repo.findById(id)
-                .orElseThrow(() -> new ApiException("There is no request Scheduler with this id :" + id));
-        repo.deleteById(id);
-        requestScheduler.stop(id);
+        try {
+            repo.deleteById(id);
+            requestScheduler.stop(id);
+        } catch (Exception e) {
+            throw new ApiException("There is no Request Scheduler with this id");
+        }
+        
     }
 
     public String CheckFormatAndGetDomaine(String url) {

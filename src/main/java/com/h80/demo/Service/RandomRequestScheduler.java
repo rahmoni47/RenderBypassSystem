@@ -12,6 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.h80.demo.Repository.MongoRepo;
 
 import jakarta.annotation.PostConstruct;
+import reactor.core.publisher.Mono;
 
 @Service
 public class RandomRequestScheduler {
@@ -19,14 +20,18 @@ public class RandomRequestScheduler {
     private final TaskScheduler taskScheduler;
     private final MongoRepo repo;
     private final Random random;
+    private final EmailManager emailManager; 
     private final Map<String, ScheduledFuture<?>> tasks = new ConcurrentHashMap<>();
 
-    public RandomRequestScheduler(WebClient webclient, TaskScheduler taskScheduler, MongoRepo repo, Random random) {
-        this.webclient = webclient;
-        this.taskScheduler = taskScheduler;
-        this.repo = repo;
+    public RandomRequestScheduler(EmailManager emailManager, Random random, MongoRepo repo, TaskScheduler taskScheduler, WebClient webclient) {
+        this.emailManager = emailManager;
         this.random = random;
+        this.repo = repo;
+        this.taskScheduler = taskScheduler;
+        this.webclient = webclient;
     }
+
+    
 
     @PostConstruct
     public void init() {
@@ -52,8 +57,13 @@ public class RandomRequestScheduler {
             return;
         webclient.get()
                 .uri(url)
-                .retrieve()
-                .bodyToMono(Void.class)
+                .exchangeToMono(response -> {
+                    if(response.statusCode().value()==404)
+                        emailManager.ServerIsDown(url);
+                    if(response.statusCode().value()==200)
+                        emailManager.ServerIsUp(url);
+                    return Mono.empty();  
+                })
                 .subscribe();
         scheduleNext(url);
     }

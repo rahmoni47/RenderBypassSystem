@@ -5,17 +5,19 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.h80.demo.Exception.ApiException;
+import com.h80.demo.Model.CreateRequestDTO;
+import com.h80.demo.Model.EditRequestDTO;
 import com.h80.demo.Model.Response;
 import com.h80.demo.Repository.MongoService;
 import com.h80.demo.Service.ManageRequest;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.Valid;
 
 @RestController
 public class RequestConrolller {
@@ -29,15 +31,15 @@ public class RequestConrolller {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Response createrequestScheduler(@RequestParam String url, @RequestParam @Email @NotBlank String email) {
-        return manager.CreateRequest(url, email);
+    public Response createrequestScheduler(@Valid @RequestBody CreateRequestDTO dto) {
+        return manager.CreateRequest(dto.getUrl(), dto.getEmail());
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Response EditServerInfo(@PathVariable String id, @RequestParam @Email @NotBlank String email) {
+    public Response EditServerInfo(@PathVariable String id, @Valid @RequestBody EditRequestDTO dto) {
         try {
-            mongoService.SetMail(id, email);
+            mongoService.SetMail(id, dto.getEmail());
             return Response.builder()
                             .status("Updated")
                             .message("email updated Successfully")
