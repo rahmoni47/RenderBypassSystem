@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
@@ -23,7 +24,7 @@ public class EmailManager {
     private final Set<String> downList = ConcurrentHashMap.newKeySet();
     private JavaMailSender mailSender;
 
-    public EmailManager(JavaMailSender mailSender, ManageRequest managerequest, MongoRepo repo) {
+    public EmailManager(JavaMailSender mailSender,@Lazy ManageRequest managerequest, MongoRepo repo) {
         this.mailSender = mailSender;
         this.managerequest = managerequest;
         this.repo = repo;
