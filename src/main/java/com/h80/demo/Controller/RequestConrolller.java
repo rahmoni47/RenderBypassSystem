@@ -50,8 +50,12 @@ public class RequestConrolller {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleterequestScheduler(@PathVariable String id){
-        manager.DeleteRequest(id) ; 
+    @ResponseStatus(HttpStatus.OK)
+    public Response deleterequestScheduler(@PathVariable String id){
+        manager.DeleteRequest(id);
+        return Response.builder()
+                        .status("Deleted")
+                        .message("The monitor for id : "+id+"is Deleted Successfully")
+                .build();  
     }
 }

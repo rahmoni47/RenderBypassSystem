@@ -37,6 +37,7 @@ public class EmailManager {
     }
 
     public void ServerIsDown(String url) {
+        System.out.println("Server is down");
         String domain = managerequest.CheckFormatAndGetDomaine(url);
         if (downList.contains(domain)) {
             return;
@@ -75,6 +76,7 @@ public class EmailManager {
     }
 
     public void ServerIsUp(String url) {
+        System.out.println("server is up");
         String domain = managerequest.CheckFormatAndGetDomaine(url);
         if (!downList.contains(domain)) {
             return;
@@ -114,9 +116,11 @@ public class EmailManager {
     @Async
     public void SendMail(String to, String Subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
+        System.out.println("Sending Email"); 
         message.setTo(to);
         message.setSubject(Subject);
         message.setText(body);
+        message.setFrom("requestscheduler@zohomail.com");
         mailSender.send(message);
     }
 

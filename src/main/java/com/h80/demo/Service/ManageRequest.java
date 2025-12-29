@@ -44,8 +44,9 @@ public class ManageRequest {
 
     public void DeleteRequest(String id) {
         try {
+            Servers server= repo.findById(id).orElseThrow(()-> new ApiException("There is no Request Scheduler with this id"));
+            requestScheduler.stop(server.getUrl());
             repo.deleteById(id);
-            requestScheduler.stop(id);
         } catch (Exception e) {
             throw new ApiException("There is no Request Scheduler with this id");
         }
