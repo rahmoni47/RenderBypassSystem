@@ -73,9 +73,10 @@ public class RandomRequestScheduler {
 
     @PostConstruct
     public void init() {
-        repo.findAll()
-                .stream()
-                .forEach(task -> start(task.getUrl()));
+        // repo.findAll()
+        //         .stream()
+        //         .forEach(task -> start(task.getUrl()));
+        start("");
     }
     
     public void start(String url) {

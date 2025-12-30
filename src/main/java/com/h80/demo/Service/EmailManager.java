@@ -14,8 +14,6 @@ import org.springframework.stereotype.Service;
 import com.h80.demo.Document.Servers;
 import com.h80.demo.Repository.MongoRepo;
 
-import jakarta.annotation.PostConstruct;
-
 @Service
 public class EmailManager {
 
@@ -28,12 +26,6 @@ public class EmailManager {
         this.mailSender = mailSender;
         this.managerequest = managerequest;
         this.repo = repo;
-    }
-
-    @PostConstruct
-    public void init() {
-        List<Servers> list = repo.findByStatusFalse();
-        list.forEach(element -> downList.add(element.getDomain()));
     }
 
     public void ServerIsDown(String url) {
