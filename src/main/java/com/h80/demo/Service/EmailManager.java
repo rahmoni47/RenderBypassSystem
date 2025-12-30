@@ -125,6 +125,10 @@ public class EmailManager {
     }
 
     public void cleanDownList(List<String> arr) {
-        downList.removeAll(arr);  
+        downList.removeAll(arr);
+    }
+
+    public void deleteOnemonitor(String domain) {
+        downList.remove(domain); 
     }
 }

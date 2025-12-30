@@ -35,8 +35,9 @@ public class CleanUpService {
                 .collect(Collectors.toList());
         emailManager.cleanDownList(deadDomains); 
         deadServers.forEach(server -> {
-            scheduler.stop(server.getId()); 
-            repo.delete(server);
+            scheduler.stop(server.getUrl()); 
         });
+
+        repo.deleteAll(deadServers);
     }
 }

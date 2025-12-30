@@ -14,11 +14,15 @@ public class ManageRequest {
 
     private final MongoRepo repo;
     private final RandomRequestScheduler requestScheduler;
+    private final EmailManager emailManager;
 
-    public ManageRequest(MongoRepo repo, RandomRequestScheduler requestScheduler) {
+    public ManageRequest(EmailManager emailManager, MongoRepo repo, RandomRequestScheduler requestScheduler) {
+        this.emailManager = emailManager;
         this.repo = repo;
         this.requestScheduler = requestScheduler;
     }
+
+    
 
     public Response CreateRequest(String url, String email) {
         String domaine = CheckFormatAndGetDomaine(url);
@@ -46,6 +50,7 @@ public class ManageRequest {
         try {
             Servers server= repo.findById(id).orElseThrow(()-> new ApiException("There is no Request Scheduler with this id"));
             requestScheduler.stop(server.getUrl());
+            emailManager.deleteOnemonitor(server.getDomain());
             repo.deleteById(id);
         } catch (Exception e) {
             throw new ApiException("There is no Request Scheduler with this id");
