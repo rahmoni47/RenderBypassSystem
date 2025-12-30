@@ -76,7 +76,7 @@ public class RandomRequestScheduler {
         // repo.findAll()
         //         .stream()
         //         .forEach(task -> start(task.getUrl()));
-        start("");
+        start("https://renderbypasssystem.onrender.com/");
     }
     
     public void start(String url) {
